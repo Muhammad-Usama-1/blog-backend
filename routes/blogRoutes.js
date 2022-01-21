@@ -8,6 +8,7 @@ const {
   updateBlog,
   myBlogs,
   uploadBlogPhoto,
+  hasUserOwn,
 } = require("../controllers/blogControllers");
 
 const blogRoutes = express.Router();
@@ -20,5 +21,5 @@ blogRoutes
   .route("/:id")
   .delete(protect, deleteBlog)
   .get(getBlog)
-  .patch(updateBlog);
+  .patch(protect, hasUserOwn, uploadBlogPhoto, updateBlog);
 module.exports = blogRoutes;
