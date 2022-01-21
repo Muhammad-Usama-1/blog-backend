@@ -67,7 +67,7 @@ exports.deleteBlog = catchAsync(async (req, res, next) => {
   res.status(200).send(null);
 });
 exports.myBlogs = catchAsync(async (req, res, next) => {
-  const blogs = await Blog.find({ user: req.user._id });
+  const blogs = await Blog.find({ user: req.user.id });
   res.status(200).json({
     status: "Success",
     blogs: blogs,
