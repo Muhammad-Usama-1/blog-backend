@@ -4,6 +4,9 @@ const blogSchema = new mongoose.Schema({
   title: {
     type: String,
   },
+  photo: {
+    type: String,
+  },
   category: {
     type: String,
     required: [true, "category is required for blog"],

@@ -19,3 +19,4 @@ module.exports = app;
 // User update password
 // forget password
 // reset password
+// choose one of two option send error carefuly means using mongoose error or validate req.body

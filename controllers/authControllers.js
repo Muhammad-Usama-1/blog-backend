@@ -3,6 +3,15 @@ const jwt = require("jsonwebtoken");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 const bcrypt = require("bcrypt");
+
+const filterObj = (obj, ...allowedFields) => {
+  const newObj = {};
+  Object.keys(obj).forEach((el) => {
+    if (allowedFields.includes(el)) newObj[el] = obj[el];
+  });
+  return newObj;
+};
+
 const cookieOptions = {
   expires: new Date(
     Date.now() + process.env.JWT_COOKIE_EXPIRES_IN * 24 * 60 * 60 * 1000
@@ -70,4 +79,16 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!correct)
     if (!correct) return next(new AppError(`Incorrect email or pasaword`, 400));
   sendCookieJWTAndUser(res, user, 200);
+});
+exports.updateMe = catchAsync(async (req, res, next) => {
+  // Only user update not his password
+  const filteredBody = filterObj(req.body, "name", "email");
+
+  const updatedUser = await User.findByIdAndUpdate(req.user._id, req.body, {
+    new: true,
+  });
+  res.status(200).json({
+    status: "success",
+    updatedUser,
+  });
 });
